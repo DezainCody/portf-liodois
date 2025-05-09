@@ -1,249 +1,230 @@
-// JavaScript para a loja Belle Rose
-document.addEventListener('DOMContentLoaded', function() {
-    // Remover qualquer fundo ou efeito da logo, garantindo transparência
-    const logoPlaceholder = document.querySelector('.logo-placeholder');
-    if (logoPlaceholder) {
-        logoPlaceholder.style.backgroundColor = 'transparent';
-        // Remover qualquer efeito de brilho existente
-        const glossyEffect = logoPlaceholder.querySelector('.glossy-effect');
-        if (glossyEffect) {
-            glossyEffect.remove();
-        }
-    }
-    
-    // Verificar o status da loja no carregamento inicial
-    checkStoreStatus();
-    
-    // Adicionar efeitos hover nos itens sociais
-    addSocialItemsHoverEffect();
-    
-    // Adicionar efeitos de brilho nos links
-    addShimmerEffects();
-    
-    // Configurar a funcionalidade para copiar o texto de localização
-    setupLocationCopy();
-    
-    // Atualizar o status a cada minuto
-    setInterval(checkStoreStatus, 60000);
+// Menu Toggle com overlay e botão de fechar - CORRIGIDO
+const menuToggle = document.querySelector('.menu-toggle');
+const menuClose = document.querySelector('.menu-close');
+const nav = document.querySelector('nav');
+const menuOverlay = document.querySelector('.menu-overlay');
+
+// Abrir menu
+menuToggle.addEventListener('click', () => {
+    nav.classList.add('active');
+    menuOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Previne rolagem quando menu aberto
 });
 
-// Função para verificar se a loja está aberta ou fechada
-function checkStoreStatus() {
-    const now = new Date();
-    const day = now.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const currentTime = hour * 60 + minute;
-    
-    // Definição dos horários de funcionamento
-    const openTime = 9 * 60; // 09:00
-    const closeTimeWeekday = 18 * 60; // 18:00
-    const closeTimeSaturday = 13 * 60; // 13:00
-    
-    let isOpen = false;
-    
-    // Verifica se está dentro do horário de funcionamento
-    if (day >= 1 && day <= 5) { // Segunda a Sexta
-        isOpen = currentTime >= openTime && currentTime < closeTimeWeekday;
-    } else if (day === 6) { // Sábado
-        isOpen = currentTime >= openTime && currentTime < closeTimeSaturday;
-    }
-    
-    // Atualiza o indicador de status
-    const statusEl = document.getElementById('status');
-    if (statusEl) {
-        if (isOpen) {
-            statusEl.innerHTML = '<div class="status-dot"></div><span>Loja Aberta</span>';
-            statusEl.className = 'status-indicator status-open';
-        } else {
-            statusEl.innerHTML = '<div class="status-dot"></div><span>Loja Fechada</span>';
-            statusEl.className = 'status-indicator status-closed';
-        }
-    }
-}
+// Fechar menu (botão X)
+menuClose.addEventListener('click', () => {
+    nav.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    document.body.style.overflow = ''; // Restaura rolagem
+});
 
-// Efeito de hover nos itens de redes sociais
-function addSocialItemsHoverEffect() {
-    const socialItems = document.querySelectorAll('.social-item');
-    socialItems.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            item.style.transform = 'translateX(10px)';
-        });
-        item.addEventListener('mouseleave', () => {
-            item.style.transform = 'translateX(0)';
-        });
+// Fechar menu (clicando no overlay)
+menuOverlay.addEventListener('click', () => {
+    nav.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    document.body.style.overflow = ''; // Restaura rolagem
+});
+
+// Fechar menu ao clicar em um link de navegação
+document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
     });
-}
+});
 
-// Adicionar efeito de brilho nos links sociais
-function addShimmerEffects() {
-    document.querySelectorAll('.social-link').forEach(link => {
-        // Adicionar efeito de brilho apenas aos links que ainda não o têm
-        if (!link.querySelector('.shimmer-effect')) {
-            const shimmerEffect = document.createElement('div');
-            shimmerEffect.className = 'shimmer-effect';
-            shimmerEffect.style.position = 'absolute';
-            shimmerEffect.style.top = '0';
-            shimmerEffect.style.left = '0';
-            shimmerEffect.style.right = '0';
-            shimmerEffect.style.bottom = '0';
-            shimmerEffect.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%)';
-            shimmerEffect.style.backgroundSize = '200% 200%';
-            shimmerEffect.style.animation = 'linkShimmerDiagonal 4s ease-in-out infinite';
-            shimmerEffect.style.pointerEvents = 'none';
-            shimmerEffect.style.zIndex = '1';
-            shimmerEffect.style.opacity = '0';
-            
-            link.style.position = 'relative';
-            link.style.overflow = 'hidden';
-            link.appendChild(shimmerEffect);
-            
-            // Adicionar efeito de hover para mostrar o brilho
-            link.addEventListener('mouseenter', () => {
-                shimmerEffect.style.opacity = '1';
-            });
-            
-            link.addEventListener('mouseleave', () => {
-                shimmerEffect.style.opacity = '0';
-            });
-        }
-    });
-    
-    // Adicionar a animação de brilho ao CSS se ainda não existir
-    if (!document.querySelector('style#dynamic-styles')) {
-        const style = document.createElement('style');
-        style.id = 'dynamic-styles';
-        style.textContent = `
-            @keyframes linkShimmerDiagonal {
-                0% { background-position: 200% -100%; }
-                100% { background-position: -100% 200%; }
-            }
-            
-            @keyframes glossyDiagonal {
-                0% { background-position: 200% -100%; opacity: 0; }
-                50% { opacity: 0.7; }
-                100% { background-position: -100% 200%; opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-}
-
-// Configurar funcionalidade para facilitar a cópia do texto de localização
-function setupLocationCopy() {
-    const locationDiv = document.querySelector('.location-div');
-    const locationText = document.querySelector('.copyable-location');
-    const copyIcon = document.querySelector('.location-copy-icon');
-    
-    if (locationDiv && locationText) {
-        // Adicionar classe de animação pulsante para chamar atenção
-        locationDiv.classList.add('location-pulse');
+// Smooth scrolling para anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
         
-        // Adicionar feedback visual ao clicar no texto ou no ícone
-        const handleCopyClick = () => {
-            // Tenta copiar o texto para a área de transferência usando a API Clipboard moderna
-            const textToCopy = locationText.textContent;
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = targetElement.offsetTop - headerHeight;
             
-            if (navigator.clipboard && window.isSecureContext) {
-                // Para navegadores modernos em contextos seguros
-                navigator.clipboard.writeText(textToCopy)
-                    .then(() => {
-                        showCopyFeedback(locationDiv, locationText, textToCopy);
-                    })
-                    .catch(err => {
-                        console.error('Erro ao copiar com Clipboard API: ', err);
-                        fallbackCopy();
-                    });
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Form validation and WhatsApp redirection
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Basic validation
+        let isValid = true;
+        const inputs = this.querySelectorAll('input, select, textarea');
+        let formData = {};
+        
+        inputs.forEach(input => {
+            if (input.hasAttribute('required') && !input.value.trim()) {
+                isValid = false;
+                input.classList.add('error');
             } else {
-                // Fallback para método mais antigo
-                fallbackCopy();
+                input.classList.remove('error');
+                // Salva os dados do formulário
+                formData[input.name] = input.value.trim();
+            }
+        });
+        
+        if (isValid) {
+            // Preparar a mensagem para o WhatsApp
+            let message = `Olá! Gostaria de solicitar um orçamento para móveis planejados.\n\n`;
+            message += `Nome: ${formData.nome}\n`;
+            message += `Telefone: ${formData.telefone}\n`;
+            
+            if (formData.endereco) {
+                message += `Endereço: ${formData.endereco}\n`;
             }
             
-            function fallbackCopy() {
-                // Seleciona todo o texto quando clicado
-                const range = document.createRange();
-                range.selectNodeContents(locationText);
-                const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-                
-                // Tenta copiar o texto
-                try {
-                    document.execCommand('copy');
-                    showCopyFeedback(locationDiv, locationText, textToCopy);
-                } catch (err) {
-                    console.error('Erro ao copiar o texto: ', err);
-                    alert('Não foi possível copiar automaticamente. Por favor, selecione o texto manualmente e copie (Ctrl+C / Cmd+C).');
+            if (formData.ambiente) {
+                let ambienteTexto = '';
+                switch(formData.ambiente) {
+                    case 'cozinha': ambienteTexto = 'Cozinha'; break;
+                    case 'dormitorio': ambienteTexto = 'Dormitório'; break;
+                    case 'sala': ambienteTexto = 'Sala'; break;
+                    case 'homeoffice': ambienteTexto = 'Home Office'; break;
+                    case 'banheiro': ambienteTexto = 'Banheiro'; break;
+                    case 'closet': ambienteTexto = 'Closet'; break;
+                    case 'areagourmet': ambienteTexto = 'Área Gourmet'; break;
+                    case 'outro': ambienteTexto = 'Outro'; break;
                 }
+                message += `Ambiente desejado: ${ambienteTexto}\n`;
             }
-        };
-        
-        // Adicionar evento de clique tanto no div quanto no ícone
-        locationDiv.addEventListener('click', handleCopyClick);
-        if (copyIcon) {
-            copyIcon.addEventListener('click', (e) => {
-                e.stopPropagation(); // Previne o disparo duplo do evento
-                handleCopyClick();
-            });
+            
+            if (formData.horario) {
+                let horarioTexto = '';
+                switch(formData.horario) {
+                    case 'manha': horarioTexto = 'Manhã (9h-12h)'; break;
+                    case 'tarde': horarioTexto = 'Tarde (13h-18h)'; break;
+                    case 'sabado': horarioTexto = 'Sábado (9h-13h)'; break;
+                }
+                message += `Preferência de horário: ${horarioTexto}\n`;
+            }
+            
+            if (formData.mensagem) {
+                message += `\nDetalhes do projeto: ${formData.mensagem}\n`;
+            }
+            
+            // Codificar a mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Número de WhatsApp (usar o mesmo número que está no botão de WhatsApp)
+            const phoneNumber = '5583991816152';
+            
+            // Construir o link do WhatsApp
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            // Redirecionar para o WhatsApp
+            window.open(whatsappURL, '_blank');
+            
+            // Limpar o formulário após o envio
+            this.reset();
+        } else {
+            alert('Por favor, preencha todos os campos obrigatórios.');
         }
-        
-        // Remover a pulsação após 5 segundos (para não ser muito intrusivo)
-        setTimeout(() => {
-            locationDiv.classList.remove('location-pulse');
-        }, 5000);
-    }
+    });
 }
 
-// Função para mostrar feedback visual ao copiar
-function showCopyFeedback(element, textElement, originalText) {
-    // Armazenar o texto original
-    const originalContent = textElement.innerHTML;
+// Tooltip para imagens clicáveis
+const images = document.querySelectorAll('img');
+const tooltip = document.getElementById('tooltip');
+
+images.forEach(img => {
+    img.addEventListener('mouseover', function(e) {
+        tooltip.style.display = 'block';
+        tooltip.style.left = e.pageX + 10 + 'px';
+        tooltip.style.top = e.pageY + 10 + 'px';
+    });
     
-    // Criar div de confirmação animada
-    const confirmDiv = document.createElement('div');
-    confirmDiv.innerHTML = '✓ Endereço copiado!';
-    confirmDiv.style.position = 'absolute';
-    confirmDiv.style.top = '50%';
-    confirmDiv.style.left = '50%';
-    confirmDiv.style.transform = 'translate(-50%, -50%)';
-    confirmDiv.style.backgroundColor = 'rgba(46, 204, 113, 0.9)';
-    confirmDiv.style.color = 'white';
-    confirmDiv.style.padding = '10px 15px';
-    confirmDiv.style.borderRadius = '4px';
-    confirmDiv.style.fontSize = '14px';
-    confirmDiv.style.fontWeight = 'bold';
-    confirmDiv.style.zIndex = '100';
-    confirmDiv.style.opacity = '0';
-    confirmDiv.style.transition = 'all 0.3s ease';
+    img.addEventListener('mouseout', function() {
+        tooltip.style.display = 'none';
+    });
     
-    // Adicionar glow ao redor do elemento
-    element.style.boxShadow = '0 0 15px rgba(46, 204, 113, 0.8)';
-    element.style.borderColor = '#2ecc71';
+    img.addEventListener('mousemove', function(e) {
+        tooltip.style.left = e.pageX + 10 + 'px';
+        tooltip.style.top = e.pageY + 10 + 'px';
+    });
+});
+
+// Header scroll effect
+const header = document.querySelector('header');
+let lastScrollTop = 0;
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Adicionar confirmação ao elemento
-    element.style.position = 'relative';
-    element.appendChild(confirmDiv);
+    if (scrollTop > lastScrollTop) {
+        // Scrolling down
+        header.style.transform = 'translateY(-100%)';
+    } else {
+        // Scrolling up
+        header.style.transform = 'translateY(0)';
+    }
     
-    // Esconder o texto original
-    textElement.style.opacity = '0';
+    lastScrollTop = scrollTop;
     
-    // Mostrar confirmação com animação
-    setTimeout(() => {
-        confirmDiv.style.opacity = '1';
-    }, 10);
+    // Add shadow when scrolled
+    if (scrollTop > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+// Slider de destaques com navegação
+const destaquesSlider = document.querySelector('.destaques-slider');
+const sliderArrowLeft = document.querySelector('.slider-arrow-left');
+const sliderArrowRight = document.querySelector('.slider-arrow-right');
+
+if (destaquesSlider && sliderArrowLeft && sliderArrowRight) {
+    // Definir a quantidade de pixels para scroll a cada clique
+    const scrollAmount = 300;
     
-    // Limpar a seleção
-    window.getSelection().removeAllRanges();
+    // Botão de navegação para esquerda
+    sliderArrowLeft.addEventListener('click', () => {
+        destaquesSlider.scrollBy({
+            left: -scrollAmount,
+            behavior: 'smooth'
+        });
+    });
     
-    // Restaurar o elemento ao estado original após 2 segundos
-    setTimeout(() => {
-        textElement.style.opacity = '1';
-        element.style.boxShadow = '';
-        element.style.borderColor = '';
-        confirmDiv.style.opacity = '0';
+    // Botão de navegação para direita
+    sliderArrowRight.addEventListener('click', () => {
+        destaquesSlider.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Verifique se as setas devem ser exibidas com base na posição do scroll
+    destaquesSlider.addEventListener('scroll', () => {
+        // Se estiver no início, oculta seta da esquerda
+        if (destaquesSlider.scrollLeft <= 10) {
+            sliderArrowLeft.style.opacity = '0.5';
+        } else {
+            sliderArrowLeft.style.opacity = '1';
+        }
         
-        setTimeout(() => {
-            element.removeChild(confirmDiv);
-        }, 300);
-    }, 2000);
+        // Se estiver no final, oculta seta da direita
+        if (destaquesSlider.scrollLeft + destaquesSlider.clientWidth >= destaquesSlider.scrollWidth - 10) {
+            sliderArrowRight.style.opacity = '0.5';
+        } else {
+            sliderArrowRight.style.opacity = '1';
+        }
+    });
+    
+    // Inicializar estado das setas
+    if (destaquesSlider.scrollLeft <= 10) {
+        sliderArrowLeft.style.opacity = '0.5';
+    }
 }
