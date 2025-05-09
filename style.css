@@ -1,0 +1,830 @@
+/* Geral */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary-color: #c2a383;
+    --secondary-color: #333333;
+    --light-color: #f8f8f8;
+    --dark-color: #222222;
+    --grey-color: #666666;
+    --white-color: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px; /* Base font size */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: var(--secondary-color);
+    background-color: var(--white-color);
+    overflow-x: hidden; /* Evita rolagem horizontal em telas pequenas */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--dark-color);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem; /* Ajustado para rem para ser mais responsivo */
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 3px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem; /* Tamanho reduzido para mobile */
+}
+
+.btn:hover {
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2.5rem; /* Adaptado para rem */
+}
+
+.section-header h2 {
+    font-size: 2rem; /* Tamanho reduzido para mobile */
+    margin-bottom: 0.75rem;
+}
+
+.divider {
+    width: 70px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--white-color);
+    padding: 0.75rem 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+header.scrolled {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 1.8rem; /* Reduzido para mobile */
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo p {
+    font-size: 0.875rem; /* Reduzido para mobile */
+    color: var(--secondary-color);
+    letter-spacing: 2px; /* Reduzido para telas pequenas */
+    margin: 0;
+}
+
+/* Menu Mobile com Overlay para fechar - CORRIGIDO */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+nav {
+    position: fixed;
+    top: 70px; /* Altura do header em mobile */
+    left: -100%;
+    width: 80%;
+    height: calc(100vh - 70px);
+    background-color: var(--white-color);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    padding: 1.25rem;
+    z-index: 1001;
+    overflow-y: auto;
+}
+
+nav.active {
+    left: 0;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: column;
+}
+
+nav ul li {
+    margin: 0.75rem 0;
+}
+
+nav ul li a {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    padding: 0.5rem 0;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+.menu-toggle {
+    display: block;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* Close button para menu mobile - ADICIONADO */
+.menu-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    display: block;
+}
+
+/* Hero Section - Ajustado para Mobile */
+.hero {
+    height: 50vh; /* Altura reduzida para mobile */
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 70px; /* Ajuste para compensar o header fixo em mobile */
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Isso fará a imagem cobrir todo o container mantendo proporções */
+    object-position: center; /* Centraliza a imagem */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.6); /* Overlay branco transparente */
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 700px;
+    color: var(--secondary-color);
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 1rem; /* Adicionado padding para mobile */
+}
+
+.hero-content h2 {
+    font-size: 2rem; /* Tamanho reduzido para mobile */
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-content p {
+    font-size: 1rem; /* Tamanho reduzido para mobile */
+    margin-bottom: 1.5rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Sobre Section - Otimizado para Mobile */
+.sobre {
+    padding: 3rem 0;
+    background-color: var(--light-color);
+}
+
+.sobre-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sobre-img {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.sobre-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sobre-text {
+    width: 100%;
+}
+
+.sobre-text h3 {
+    font-size: 1.5rem; /* Tamanho reduzido para mobile */
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+}
+
+.sobre-text p {
+    font-size: 0.95rem; /* Ligeiramente menor para mobile */
+}
+
+/* Coleções Section - Otimizado para Mobile */
+.colecoes {
+    padding: 3rem 0;
+}
+
+.colecoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Aumentado também para mobile */
+    gap: 1rem; /* Gap reduzido */
+}
+
+.colecao-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.colecao-item:hover {
+    transform: translateY(-5px); /* Menor movimento em mobile */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.colecao-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: var(--white-color);
+}
+
+.colecao-info h3 {
+    margin-bottom: 3px;
+    font-size: 1.1rem; /* Menor para caber em telas pequenas */
+}
+
+.colecao-info p {
+    font-size: 0.8rem; /* Muito menor para caber bem */
+    margin-bottom: 0;
+}
+
+/* Destaques Section - MODIFICADO com setas de navegação */
+.destaques {
+    padding: 3rem 0;
+    background-color: var(--light-color);
+}
+
+.destaques-container {
+    position: relative;
+    padding: 0 30px; /* Espaço para as setas */
+}
+
+.destaques-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem; /* Gap reduzido */
+    padding: 1rem 0;
+    -webkit-overflow-scrolling: touch; /* Melhor rolagem em iOS */
+    transition: transform 0.3s ease;
+    scrollbar-width: none; /* Oculta scrollbar no Firefox */
+}
+
+.destaques-slider::-webkit-scrollbar {
+    display: none; /* Oculta scrollbar em Chrome/Safari */
+}
+
+.destaque-item {
+    flex: 0 0 auto;
+    width: 260px; /* Aumentado para mobile também */
+    text-align: center;
+    background-color: var(--white-color);
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.destaque-item:hover {
+    transform: translateY(-5px); /* Menor movimento em mobile */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.destaque-item img {
+    width: 100%;
+    height: 350px; /* Aumentado para 350px para maior nitidez */
+    object-fit: cover; /* Mantém a proporção da imagem */
+    margin-bottom: 0.75rem;
+    border-radius: 3px;
+    transition: transform 0.3s ease;
+}
+
+.destaque-item h3 {
+    font-size: 1.1rem; /* Menor para mobile */
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.destaque-item p {
+    font-size: 0.875rem; /* Menor para mobile */
+}
+
+/* Setas de navegação para destaques - ADICIONADO */
+.slider-nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}
+
+.slider-arrow-left {
+    left: 0;
+}
+
+.slider-arrow-right {
+    right: 0;
+}
+
+/* Contato Section - Otimizado para Mobile */
+.contato {
+    padding: 3rem 0;
+}
+
+.contato-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.contato-info {
+    width: 100%;
+}
+
+.contato-info h3 {
+    font-size: 1.5rem; /* Adaptado para mobile */
+    margin-bottom: 1.25rem;
+    color: var(--primary-color);
+}
+
+.contato-form {
+    width: 100%;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.info-item i {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+}
+
+.info-item p {
+    font-size: 0.95rem; /* Ligeiramente menor para mobile */
+    margin-bottom: 0;
+}
+
+.social-media {
+    margin-top: 1.5rem;
+}
+
+.social-media a {
+    display: inline-block;
+    margin-right: 1rem;
+    font-size: 1.3rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.btn-submit {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    padding: 0.75rem;
+}
+
+/* Footer - Otimizado para Mobile */
+footer {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    padding: 3rem 0 0;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center; /* Centralizado em mobile */
+}
+
+.footer-logo h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.footer-logo p {
+    letter-spacing: 2px;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.footer-links h3,
+.footer-newsletter h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.footer-links ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centralizado em mobile */
+}
+
+.footer-links ul li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-links ul li a {
+    color: var(--light-color);
+    font-size: 0.95rem;
+}
+
+.footer-links ul li a:hover {
+    color: var(--primary-color);
+}
+
+.newsletter-form {
+    display: flex;
+    margin-top: 1rem;
+    max-width: 100%;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 0.6rem 0.75rem;
+    border: none;
+    border-radius: 3px 0 0 3px;
+    font-size: 0.9rem;
+}
+
+.newsletter-form button {
+    padding: 0.6rem 0.75rem;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+    font-size: 0.875rem;
+}
+
+/* WhatsApp Button - Ajustado para Mobile */
+.whatsapp-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #25D366;
+    color: var(--white-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+    background-color: #128C7E;
+    transform: scale(1.1);
+}
+
+/* Tooltip para imagens clicáveis */
+img:hover {
+    transform: scale(1.02);
+}
+
+img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.colecao-item img {
+    width: 100%;
+    height: 400px; /* Aumentado para 400px para maior nitidez */
+    object-fit: cover; /* Garante que a imagem cubra bem o espaço sem distorção */
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+/* Estilos para mensagens de erro no formulário */
+.error {
+    border-color: #ff3860 !important;
+}
+
+/* Responsividade para telas maiores */
+/* Responsividade para telas maiores */
+@media (min-width: 576px) {
+    .destaque-item {
+        width: 320px; /* Aumentado para 320px */
+    }
+    
+    .colecoes-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Aumentado para 300px */
+        gap: 1.5rem;
+    }
+    
+    .hero-content h2 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+    
+    .hero {
+        height: 55vh;
+    }
+    
+    .hero-content h2 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 2.2rem;
+    }
+    
+    .sobre-text h3,
+    .contato-info h3 {
+        font-size: 1.6rem;
+    }
+    
+    .btn {
+        padding: 0.8rem 1.75rem;
+        font-size: 1rem;
+    }
+    
+    .sobre, .colecoes, .destaques, .contato {
+        padding: 4rem 0;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Header para desktop */
+    nav {
+        position: static;
+        width: auto;
+        height: auto;
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        overflow: visible;
+    }
+    
+    nav ul {
+        flex-direction: row;
+    }
+    
+    nav ul li {
+        margin: 0 0 0 1.875rem;
+    }
+    
+    .menu-toggle {
+        display: none;
+    }
+    
+    .menu-close {
+        display: none;
+    }
+    
+    /* Hero para desktop */
+    .hero {
+        height: 60vh;
+        margin-top: 80px;
+    }
+    
+    .hero-content h2 {
+        font-size: 3.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+    
+    /* Sobre Section para desktop */
+    .sobre-content {
+        flex-direction: row;
+        align-items: center;
+        gap: 3rem;
+    }
+    
+    .sobre-img {
+        flex: 1;
+        margin: 0;
+    }
+    
+    .sobre-text {
+        flex: 1;
+    }
+    
+    .sobre-text h3 {
+        font-size: 1.8rem;
+    }
+    
+    /* Contato Section para desktop */
+    .contato-content {
+        flex-direction: row;
+    }
+    
+    .contato-info {
+        flex: 1;
+    }
+    
+    .contato-form {
+        flex: 2;
+    }
+    
+    /* Footer para desktop */
+    .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+    
+    .footer-links ul {
+        align-items: flex-start;
+    }
+}
+
+@media (min-width: 1200px) {
+    html {
+        font-size: 18px;
+    }
+    
+    .section-header h2 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content h2 {
+        font-size: 3.5rem;
+    }
+}
